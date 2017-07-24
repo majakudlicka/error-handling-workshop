@@ -26,7 +26,7 @@ module.exports = (req, res, body) => {
     filename = payload.filename;
     contents = payload.contents;
   } catch (e) {
-    return resJson(res, 400, { error: 'Invalid JSON' });
+    return resJson(res, 400, {error: 'Invalid JSON'});
   }
 
   // Payload validation; filename and contents are validated by the `validate`
@@ -36,8 +36,8 @@ module.exports = (req, res, body) => {
   // `createRecord` has unpredictable behaviour if its inputs are invalid.
   // Instead we should respond and indicate to the user what the problem is.
   const result = validate(filename, contents);
-  if (! result.isValid) {
-    return resJson(res, 400, { error: `Invalid parameters: ${result.message}`});
+  if (!result.isValid) {
+    return resJson(res, 400, {error: `Invalid parameters: ${result.message}`});
   }
 
   // After successfully validating the payload, we call `createRecord`, which
@@ -51,31 +51,29 @@ module.exports = (req, res, body) => {
     contents,
     (err, message) =>
       err
-        ? resJson(res, 500, { error: 'Internal Error' })
-        : resJson(res, 200, { message })
+        ? resJson(res, 500, {error: 'Internal Error'})
+        : resJson(res, 200, {message})
   );
 };
 
 // Simple utility function to make responding simpler
 const resJson = (res, status, body) => {
-  res.writeHead(status, { 'Content-Type': 'application/json' });
+  res.writeHead(status, {'Content-Type': 'application/json'});
   res.end(JSON.stringify(body));
-}
+};
 
 const validate = (filename, contents) => {
   try {
     validateFilename(filename);
     validateContents(contents);
 
-    return { isValid: true };
-
+    return {isValid: true};
   } catch (e) {
-    return { isValid: false, message: e.message };
-
+    return {isValid: false, message: e.message};
   }
-}
+};
 
-const validateFilename = (filename) => {
+const validateFilename = filename => {
   if (typeof filename !== 'string') {
     throw new TypeError('Filename must be a string');
   }
@@ -87,27 +85,27 @@ const validateFilename = (filename) => {
   if (/\.\./g.test(filename)) {
     throw new Error('Directory traversal not permitted');
   }
-}
+};
 
-const validateContents = (contents) => {
+const validateContents = contents => {
   if (
     contents === null ||
     typeof contents !== 'object' ||
     Array.isArray(contents)
   ) {
-    throw new TypeError('Contents must be an object')
+    throw new TypeError('Contents must be an object');
   }
 
   const attrs = [
-    { attr: 'name', type: 'string', min: 1, max: 30 },
-    { attr: 'age', type: 'number', min: 2, max: 20 },
-    { attr: 'body', type: 'string', min: 1, max: 10000 },
+    {attr: 'name', type: 'string', min: 1, max: 30},
+    {attr: 'age', type: 'number', min: 2, max: 20},
+    {attr: 'body', type: 'string', min: 1, max: 10000}
   ];
 
   for (let ii = 0; ii < attrs.length; ii++) {
-    const { attr, type, min, max } = attrs[ii];
+    const {attr, type, min, max} = attrs[ii];
 
-    if (! contents.hasOwnProperty(attr)) {
+    if (!contents.hasOwnProperty(attr)) {
       throw new Error(`Contents missing property ${attr}`);
     }
 
