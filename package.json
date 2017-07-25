@@ -4,13 +4,10 @@
   "description": "A workshop to help deal with the perils of errors in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "tape tests/modules/index.test.js | tap-spec",
+    "test": "tape tests/modules/**.js | tap-spec",
     "acceptance": "tape acceptance/index.js | tap-spec"
   },
-  "contributors": [
-    "njsfield",
-    "eliascodes"
-  ],
+  "contributors": ["njsfield", "eliascodes"],
   "license": "MIT",
   "devDependencies": {
     "shot": "^3.4.0",

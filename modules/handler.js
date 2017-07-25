@@ -4,14 +4,9 @@ const createRecord = require('./createRecord.js');
 const validateFilename = require('./validateFilename.js');
 
 module.exports = (req, res, body) => {
-  try {
-    const payload = JSON.parse(body);
-    var filename = payload.filename;
-    var contents = payload.contents;
-  } catch (e) {
-    res.writeHead(400, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify({error: 'Invalid JSON'}));
-  }
+  const payload = JSON.parse(body);
+  var filename = payload.filename;
+  var contents = payload.contents;
 
   const result = validateFilename(filename);
   if (!result.isValid) {
@@ -26,7 +21,7 @@ module.exports = (req, res, body) => {
       res.end(JSON.stringify({error: 'internal error'}));
     } else {
       res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify({message}));
+      res.end(JSON.stringify(message));
     }
   });
 };
